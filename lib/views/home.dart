@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:uptodo/models/task.dart';
+import 'package:uptodo/services/database.dart';
 import 'package:uptodo/ui/task_item_list.dart';
 import 'package:uptodo/views/new_task.dart';
 
@@ -12,16 +16,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<TaskItemList> tasks = <TaskItemList>[
-    const TaskItemList(title: "Task one"),
-    const TaskItemList(title: "Task 2"),
-    const TaskItemList(title: "Task number 3"),
-  ];
+  final DatabaseService database = DatabaseService();
+
+  Future<List<Task>> getTasks() async {
+    // tasks = await database.allTasks();
+    // log(tasks.toString());
+    return await database.allTasks();
+  }
+
+  late Future<List<Task>> tasks;
+
+  @override
+  void initState() {
+    super.initState();
+    tasks = getTasks();
+  }
 
   void addTask(String title) {
-    setState(() {
-      tasks.add(TaskItemList(title: title));
-    });
+    database.insertTask(Task(title: title)).then((r) => {
+          setState(() {
+            tasks = getTasks();
+          })
+        });
   }
 
   @override
@@ -33,7 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           IconButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Settings pressed.")));
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Settings pressed.")));
               },
               icon: const Icon(Icons.settings))
         ],
@@ -50,11 +67,17 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(fontSize: 30),
             ),
             Expanded(
-              child: ListView.builder(
-                  itemCount: tasks.length,
-                  itemBuilder: (context, int index) {
-                    return tasks[index];
-                  }),
+              child: FutureBuilder<List<Task>>(
+                future: tasks,
+                builder: (context, snapshot) {
+                  List<Task> t = snapshot.data!;
+                  return ListView.builder(
+                      itemCount: t.length,
+                      itemBuilder: (context, int index) {
+                        return TaskItemList(title: t[index].title);
+                      });
+                },
+              ),
             ),
           ],
         ),
@@ -71,10 +94,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> navigateToNewTask(BuildContext context) async {
-    final result = await Navigator.push(context, MaterialPageRoute(builder: (context) => const NewTask()));
+    final result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const NewTask()));
 
     if (!context.mounted) return;
 
     addTask(result);
+    getTasks();
+
+    // addTask(result);
   }
 }
