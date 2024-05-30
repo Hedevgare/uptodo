@@ -30,7 +30,6 @@ class DatabaseService {
 
   Future<void> insertTask(Task task) async {
     final db = await database;
-    log(task.toString());
     await db.insert('tasks', task.toMap());
   }
 
@@ -39,11 +38,16 @@ class DatabaseService {
 
     final List<Map<String, Object?>> tasksMap = await db.query('tasks');
 
-    log(tasksMap.toString());
-
     return [
       for (final {'id': id as int, 'title': title as String} in tasksMap)
         Task(id: id, title: title)
     ];
+  }
+
+  // For development purposes
+  Future<void> deleteAllTasks() async {
+    final db = await database;
+
+    await db.execute('DELETE FROM tasks');
   }
 }

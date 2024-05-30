@@ -19,8 +19,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final DatabaseService database = DatabaseService();
 
   Future<List<Task>> getTasks() async {
-    // tasks = await database.allTasks();
-    // log(tasks.toString());
     return await database.allTasks();
   }
 
@@ -40,6 +38,14 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  void purgeDatabase() {
+    database.deleteAllTasks().then((r) => {
+      setState(() {
+        tasks = getTasks();
+      })
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Settings pressed.")));
+                    const SnackBar(content: Text("Deleting ALL tasks...")));
+                purgeDatabase();
               },
               icon: const Icon(Icons.settings))
         ],
