@@ -38,6 +38,15 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  void deleteTask(int id) {
+    database.deleteTask(id).then((r) => {
+      setState(() {
+        tasks = getTasks();
+      })
+    });
+  }
+
+  // Development purposes
   void purgeDatabase() {
     database.deleteAllTasks().then((r) => {
           setState(() {
@@ -45,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
           })
         });
   }
+  // End
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Deleting ALL tasks...")));
-                purgeDatabase();
+                    const SnackBar(content: Text("TODO: App settings")));
+                // purgeDatabase();
               },
               icon: const Icon(Icons.settings))
         ],
@@ -91,8 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return ListView.builder(
                       itemCount: t.length,
                       itemBuilder: (context, int index) {
-                        return TaskItemList(
-                            title: t[index].title, dueDate: t[index].dueDate!);
+                        return TaskItemList(task: t[index], onDelete: () => deleteTask(t[index].id!),);
                       });
                 },
               ),
@@ -102,7 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // addTask("New task");
           navigateToNewTask(context);
         },
         tooltip: 'New task',
@@ -117,11 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (!context.mounted) return;
 
-    // addTask(result);
     setState(() {
       tasks = getTasks();
     });
-
-    // addTask(result);
   }
 }

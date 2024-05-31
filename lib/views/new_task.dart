@@ -75,9 +75,10 @@ class _NewTaskState extends State<NewTask> {
               maxLines: 5,
               controller: controller,
               decoration: const InputDecoration(
-                  hintText: "Describe your task.",
+                  hintText: "Describe your task",
+                  hintStyle: TextStyle(color: Colors.grey),
                   alignLabelWithHint: true,
-                  labelText: "New task",
+                  labelText: "Task description",
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none),
               onTapOutside: (e) => FocusScope.of(context).unfocus(),

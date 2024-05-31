@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uptodo/models/task.dart';
 
 class TaskItemList extends StatelessWidget {
-  final String title;
-  final String dueDate;
+  final Task task;
+  final VoidCallback onDelete;
 
-  const TaskItemList({super.key, required this.title, required this.dueDate});
+  const TaskItemList({super.key, required this.task, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +20,47 @@ class TaskItemList extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Row(
             children: [
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [Text(title), Text(dueDate == 'null' ? '' : DateFormat.yMMMEd().format(DateTime.parse(dueDate)))]
-              )),
+              Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    Text(task.title, style: const TextStyle(fontSize: 16)),
+                    Text(
+                      task.dueDate == 'null'
+                          ? ''
+                          : DateFormat.yMMMEd()
+                              .format(DateTime.parse(task.dueDate!)),
+                      style:
+                          const TextStyle(color: Colors.blueGrey, fontSize: 12),
+                    )
+                  ])),
               IconButton(
-                  onPressed: () => {print("Task item list pressed")},
-                  icon: const Icon(Icons.more_horiz))
+                  onPressed: () => showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
+                                  leading: const Icon(Icons.delete,
+                                      color: Colors.red),
+                                  title: const Text(
+                                    'Delete task',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onTap: () {
+                                    onDelete();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                  icon: const Icon(Icons.more_horiz)),
             ],
           ),
         ),
