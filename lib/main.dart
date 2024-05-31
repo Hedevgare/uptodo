@@ -14,6 +14,9 @@ class MyApp extends StatelessWidget {
       title: 'Uptodo',
       theme: ThemeData(
         colorScheme: const ColorScheme.light(primary: Colors.blue),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white)
+        ),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Uptodo'),

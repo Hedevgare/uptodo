@@ -6,6 +6,7 @@ import 'package:uptodo/models/task.dart';
 
 class DatabaseService {
   DatabaseService._privateConstructor();
+
   static final DatabaseService instance = DatabaseService._privateConstructor();
 
   factory DatabaseService() {
@@ -23,8 +24,8 @@ class DatabaseService {
   initDatabase() async {
     return openDatabase(join(await getDatabasesPath(), 'uptodo.db'),
         onCreate: (db, version) {
-      return db
-          .execute('CREATE TABLE tasks (id INTEGER PRIMARY KEY, title TEXT)');
+      return db.execute(
+          'CREATE TABLE tasks (id INTEGER PRIMARY KEY, title TEXT, due_date TEXT);');
     }, version: 1);
   }
 
@@ -39,8 +40,12 @@ class DatabaseService {
     final List<Map<String, Object?>> tasksMap = await db.query('tasks');
 
     return [
-      for (final {'id': id as int, 'title': title as String} in tasksMap)
-        Task(id: id, title: title)
+      for (final {
+            'id': id as int,
+            'title': title as String,
+            'due_date': dueDate as String
+          } in tasksMap)
+        Task(id: id, title: title, dueDate: dueDate)
     ];
   }
 
@@ -50,4 +55,7 @@ class DatabaseService {
 
     await db.execute('DELETE FROM tasks');
   }
+
+  Future<void> deleteDatabase(String path) =>
+      databaseFactory.deleteDatabase(path);
 }

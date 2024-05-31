@@ -40,10 +40,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void purgeDatabase() {
     database.deleteAllTasks().then((r) => {
-      setState(() {
-        tasks = getTasks();
-      })
-    });
+          setState(() {
+            tasks = getTasks();
+          })
+        });
   }
 
   @override
@@ -73,15 +73,26 @@ class _MyHomePageState extends State<MyHomePage> {
               "My Tasks",
               style: TextStyle(fontSize: 30),
             ),
+            const SizedBox(height: 20,),
             Expanded(
               child: FutureBuilder<List<Task>>(
                 future: tasks,
                 builder: (context, snapshot) {
-                  List<Task> t = snapshot.data!;
+                  List<Task> t = snapshot.data ?? [];
+                  if (t.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [Text("Nothing to do")]),
+                    );
+                  }
                   return ListView.builder(
                       itemCount: t.length,
                       itemBuilder: (context, int index) {
-                        return TaskItemList(title: t[index].title);
+                        return TaskItemList(
+                            title: t[index].title, dueDate: t[index].dueDate!);
                       });
                 },
               ),
@@ -106,8 +117,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (!context.mounted) return;
 
-    addTask(result);
-    getTasks();
+    // addTask(result);
+    setState(() {
+      tasks = getTasks();
+    });
 
     // addTask(result);
   }
