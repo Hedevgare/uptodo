@@ -2,12 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uptodo/models/task.dart';
 
-class TaskItemList extends StatelessWidget {
+class TaskItemList extends StatefulWidget {
   final Task task;
   final VoidCallback onDelete;
   final VoidCallback onUpdate;
 
-  const TaskItemList({super.key, required this.task, required this.onDelete, required this.onUpdate});
+  const TaskItemList(
+      {super.key,
+      required this.task,
+      required this.onDelete,
+      required this.onUpdate});
+
+  @override
+  State<TaskItemList> createState() => _TaskItemListState();
+}
+
+class _TaskItemListState extends State<TaskItemList> {
+  late Task task;
+
+  @override
+  void initState() {
+    super.initState();
+    task = widget.task;
+  }
+
+  void updateTask(Task updatedTask) {
+    setState(() {
+      task = updatedTask;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +39,14 @@ class TaskItemList extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: task.isDone ? Colors.lightGreen[200] : Colors.white,
-            border: Border.all(color: Colors.grey, width: 1),
-            borderRadius: BorderRadius.circular(15)),
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 4,
+                  offset: const Offset(0, 1))
+            ]),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Row(
@@ -53,15 +82,18 @@ class TaskItemList extends StatelessWidget {
                                     style: TextStyle(color: Colors.red),
                                   ),
                                   onTap: () {
-                                    onDelete();
+                                    widget.onDelete();
                                     Navigator.pop(context);
                                   },
                                 ),
                                 ListTile(
                                   leading: const Icon(Icons.check),
-                                  title: Text('Mark as ${task.isDone ? "not done" : "done"}'),
+                                  title: Text(
+                                      'Mark as ${task.isDone ? "not done" : "done"}'),
                                   onTap: () {
-                                    onUpdate();
+                                    task.isDone != task.isDone;
+                                    updateTask(task);
+                                    widget.onUpdate();
                                     Navigator.pop(context);
                                   },
                                 )

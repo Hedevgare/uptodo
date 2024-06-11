@@ -41,11 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateTask(Task task) {
     task.isDone = !task.isDone;
-    database.updateTask(task).then((r) => {
-          setState(() {
-            tasks = getTasks();
-          })
-        });
+    database.updateTask(task);
   }
 
   void deleteTask(int id) {
