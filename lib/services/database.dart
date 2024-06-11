@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uptodo/models/task.dart';
+import 'package:uptodo/services/migrations.dart';
 
 class DatabaseService {
   DatabaseService._privateConstructor();
@@ -22,17 +24,33 @@ class DatabaseService {
   }
 
   initDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), 'uptodo.db'),
-        onCreate: (db, version) {
-      return db.execute(
-          'CREATE TABLE tasks (id INTEGER PRIMARY KEY, title TEXT, due_date TEXT);');
-    }, version: 1);
+    final path = join(await getDatabasesPath(), 'uptodo.db');
+    const int currentVersion = 2;
+
+    return openDatabase(path, version: currentVersion, onCreate: (db, version) async {
+      var batch = db.batch();
+      MigrationsService.migrationV1(batch);
+      await batch.commit();
+    }, onUpgrade: (db, oldVersion, newVersion) async {
+      var batch = db.batch();
+      switch(oldVersion) {
+        case 1:
+          MigrationsService.migrationV2(batch);
+          break;
+      }
+      await batch.commit();
+    }, onDowngrade: onDatabaseDowngradeDelete);
   }
 
   Future<void> insertTask(Task task) async {
     final db = await database;
     await db.insert('tasks', task.toMap());
   }
+
+  Future<void> updateTask(Task task) async {
+    final db = await database;
+    await db.update('tasks', task.toMap());
+}
 
   Future<List<Task>> allTasks() async {
     final db = await database;
@@ -43,9 +61,10 @@ class DatabaseService {
       for (final {
             'id': id as int,
             'title': title as String,
-            'due_date': dueDate as String
+            'due_date': dueDate as String,
+            'is_done': isDone as int
           } in tasksMap)
-        Task(id: id, title: title, dueDate: dueDate)
+        Task(id: id, title: title, dueDate: dueDate, isDone: isDone == 1 ? true : false)
     ];
   }
 

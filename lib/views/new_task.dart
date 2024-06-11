@@ -44,7 +44,7 @@ class _NewTaskState extends State<NewTask> {
   final DatabaseService database = DatabaseService();
 
   Future<void> addTask(String title, String dueDate) async {
-    database.insertTask(Task(title: title, dueDate: dueDate));
+    database.insertTask(Task(title: title, dueDate: dueDate, isDone: false));
   }
 
   @override

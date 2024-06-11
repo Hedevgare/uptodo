@@ -5,8 +5,9 @@ import 'package:uptodo/models/task.dart';
 class TaskItemList extends StatelessWidget {
   final Task task;
   final VoidCallback onDelete;
+  final VoidCallback onUpdate;
 
-  const TaskItemList({super.key, required this.task, required this.onDelete});
+  const TaskItemList({super.key, required this.task, required this.onDelete, required this.onUpdate});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class TaskItemList extends StatelessWidget {
       padding: const EdgeInsets.all(5.0),
       child: Container(
         decoration: BoxDecoration(
+            color: task.isDone ? Colors.lightGreen[200] : Colors.white,
             border: Border.all(color: Colors.grey, width: 1),
             borderRadius: BorderRadius.circular(15)),
         child: Padding(
@@ -55,6 +57,14 @@ class TaskItemList extends StatelessWidget {
                                     Navigator.pop(context);
                                   },
                                 ),
+                                ListTile(
+                                  leading: const Icon(Icons.check),
+                                  title: Text('Mark as ${task.isDone ? "not done" : "done"}'),
+                                  onTap: () {
+                                    onUpdate();
+                                    Navigator.pop(context);
+                                  },
+                                )
                               ],
                             ),
                           );

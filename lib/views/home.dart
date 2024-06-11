@@ -19,7 +19,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final DatabaseService database = DatabaseService();
 
   Future<List<Task>> getTasks() async {
-    return await database.allTasks();
+    var tasks = await database.allTasks();
+    return tasks;
   }
 
   late Future<List<Task>> tasks;
@@ -31,7 +32,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void addTask(String title) {
-    database.insertTask(Task(title: title)).then((r) => {
+    database.insertTask(Task(title: title, isDone: false)).then((r) => {
+          setState(() {
+            tasks = getTasks();
+          })
+        });
+  }
+
+  void updateTask(Task task) {
+    task.isDone = !task.isDone;
+    database.updateTask(task).then((r) => {
           setState(() {
             tasks = getTasks();
           })
@@ -40,10 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void deleteTask(int id) {
     database.deleteTask(id).then((r) => {
-      setState(() {
-        tasks = getTasks();
-      })
-    });
+          setState(() {
+            tasks = getTasks();
+          })
+        });
   }
 
   // Development purposes
@@ -54,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           })
         });
   }
+
   // End
 
   @override
@@ -83,7 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
               "My Tasks",
               style: TextStyle(fontSize: 30),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Expanded(
               child: FutureBuilder<List<Task>>(
                 future: tasks,
@@ -101,7 +114,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   return ListView.builder(
                       itemCount: t.length,
                       itemBuilder: (context, int index) {
-                        return TaskItemList(task: t[index], onDelete: () => deleteTask(t[index].id!),);
+                        return TaskItemList(
+                            task: t[index],
+                            onDelete: () => deleteTask(t[index].id!),
+                            onUpdate: () => updateTask(t[index]));
                       });
                 },
               ),
