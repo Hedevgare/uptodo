@@ -14,4 +14,13 @@ class Task {
       'is_done': isDone ? 1 : 0
     };
   }
+
+  static Task fromMap(Map<String, dynamic> map) {
+    return Task(
+      id: map['id'],
+      title: map['title'],
+      dueDate: map['due_date'],
+      isDone: map['is_done'] == 1,
+    );
+  }
 }

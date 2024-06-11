@@ -31,17 +31,13 @@ class _MyHomePageState extends State<MyHomePage> {
     tasks = getTasks();
   }
 
-  void addTask(String title) {
-    database.insertTask(Task(title: title, isDone: false)).then((r) => {
-          setState(() {
-            tasks = getTasks();
-          })
-        });
-  }
-
-  void updateTask(Task task) {
+  void updateTask(Task task) async {
     task.isDone = !task.isDone;
-    database.updateTask(task);
+    await database.updateTask(task).then((r) => {
+      setState(() {
+        tasks = getTasks();
+      })
+    });
   }
 
   void deleteTask(int id) {
@@ -74,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("TODO: App settings")));
-                // purgeDatabase();
+                purgeDatabase();
               },
               icon: const Icon(Icons.settings))
         ],
@@ -97,24 +93,23 @@ class _MyHomePageState extends State<MyHomePage> {
               child: FutureBuilder<List<Task>>(
                 future: tasks,
                 builder: (context, snapshot) {
-                  List<Task> t = snapshot.data ?? [];
-                  if (t.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.only(top: 50.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Text("Nothing to do")]),
-                    );
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('Nothing to do!'));
+                  } else {
+                    List<Task> t = snapshot.data ?? [];
+                    return ListView.builder(
+                        itemCount: t.length,
+                        itemBuilder: (context, int index) {
+                          return TaskItemList(
+                              task: t[index],
+                              onDelete: () => deleteTask(t[index].id!),
+                              onUpdate: () => updateTask(t[index]));
+                        });
                   }
-                  return ListView.builder(
-                      itemCount: t.length,
-                      itemBuilder: (context, int index) {
-                        return TaskItemList(
-                            task: t[index],
-                            onDelete: () => deleteTask(t[index].id!),
-                            onUpdate: () => updateTask(t[index]));
-                      });
                 },
               ),
             ),
@@ -132,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> navigateToNewTask(BuildContext context) async {
-    final result = await Navigator.push(
+    await Navigator.push(
         context, MaterialPageRoute(builder: (context) => const NewTask()));
 
     if (!context.mounted) return;

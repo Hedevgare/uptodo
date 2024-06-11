@@ -54,18 +54,8 @@ class DatabaseService {
 
   Future<List<Task>> allTasks() async {
     final db = await database;
-
-    final List<Map<String, Object?>> tasksMap = await db.query('tasks');
-
-    return [
-      for (final {
-            'id': id as int,
-            'title': title as String,
-            'due_date': dueDate as String,
-            'is_done': isDone as int
-          } in tasksMap)
-        Task(id: id, title: title, dueDate: dueDate, isDone: isDone == 1 ? true : false)
-    ];
+    final List<Map<String, Object?>> tasksMap = await db.query('tasks', orderBy: 'is_done ASC');
+    return tasksMap.map((map) => Task.fromMap(map)).toList();
   }
 
   Future<void> deleteTask(int id) async {
