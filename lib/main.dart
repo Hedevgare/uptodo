@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:uptodo/providers/task_provider.dart';
 import 'package:uptodo/views/home.dart';
 
 void main() {
@@ -10,16 +12,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Uptodo',
-      theme: ThemeData(
-        colorScheme: const ColorScheme.light(primary: Colors.blue),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white)
+    return ChangeNotifierProvider(
+      create: (context) => TaskProvider(),
+      child: MaterialApp(
+        title: 'Uptodo',
+        theme: ThemeData(
+          colorScheme: const ColorScheme.light(primary: Colors.blue),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue, foregroundColor: Colors.white)),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
+        home: const MyHomePage(title: 'Uptodo'),
       ),
-      home: const MyHomePage(title: 'Uptodo'),
     );
   }
 }

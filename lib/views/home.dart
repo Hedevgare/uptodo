@@ -64,83 +64,52 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => TaskProvider(),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-          actions: <Widget>[
-            IconButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("TODO: App settings")));
-                  // purgeDatabase();
-                },
-                icon: const Icon(Icons.settings))
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("TODO: App settings")));
+                Provider.of<TaskProvider>(context, listen: false).purgeAllData();
+              },
+              icon: const Icon(Icons.settings))
+        ],
+      ),
+      body: const Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            // const TextField(
+            //   decoration: InputDecoration(hintText: "Search tasks"),
+            // ),
+            Text(
+              "My Tasks",
+              style: TextStyle(fontSize: 30),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: TaskList(),
+            ),
           ],
         ),
-        body: const Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              // const TextField(
-              //   decoration: InputDecoration(hintText: "Search tasks"),
-              // ),
-              Text(
-                "My Tasks",
-                style: TextStyle(fontSize: 30),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: TaskList()
-                // child: FutureBuilder<List<Task>>(
-                //   future: tasks,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.waiting) {
-                //       return const Center(child: CircularProgressIndicator());
-                //     } else if (snapshot.hasError) {
-                //       return Center(child: Text('Error: ${snapshot.error}'));
-                //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                //       return const Center(child: Text('Nothing to do!'));
-                //     } else {
-                //       List<Task> t = snapshot.data ?? [];
-                //       return ListView.builder(
-                //           itemCount: t.length,
-                //           itemBuilder: (context, int index) {
-                //             return TaskItemList(
-                //                 task: t[index],
-                //                 onDelete: () => deleteTask(t[index].id!),
-                //                 onUpdate: () => updateTask(t[index]));
-                //           });
-                //     }
-                //   },
-                // ),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            navigateToNewTask(context);
-          },
-          tooltip: 'New task',
-          child: const Icon(Icons.add),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const NewTask()));
+        },
+        tooltip: 'New task',
+        child: const Icon(Icons.add),
       ),
     );
   }
 
-  Future<void> navigateToNewTask(BuildContext context) async {
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const NewTask()));
-
-    if (!context.mounted) return;
-
-    setState(() {
-      tasks = getTasks();
-    });
-  }
+  // Future<void> navigateToNewTask(BuildContext context) async {
+  //   await
+  // }
 }

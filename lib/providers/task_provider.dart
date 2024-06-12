@@ -5,32 +5,31 @@ import '../models/task.dart';
 class TaskProvider extends ChangeNotifier {
   DatabaseService database = DatabaseService();
 
-  List<Task> tasks = [];
-
   TaskProvider() {
     getTasks();
   }
 
-  Future<void> getTasks() async {
-    final list = await database.allTasks();
-    tasks = [];
-    notifyListeners();
-    tasks = List.from(list);
-    notifyListeners();
+  Future<List<Task>> getTasks() async {
+    return await database.allTasks();
   }
 
   Future<void> addTask(task) async {
     await database.insertTask(task);
-    await getTasks();
+    notifyListeners();
   }
 
   Future<void> updateTask(Task task) async {
     await database.updateTask(task);
-    await getTasks();
+    notifyListeners();
   }
 
   Future<void> deleteTask(int id) async {
     await database.deleteTask(id);
-    await getTasks();
+    notifyListeners();
+  }
+
+  Future<void> purgeAllData() async {
+    await database.deleteAllTasks();
+    notifyListeners();
   }
 }

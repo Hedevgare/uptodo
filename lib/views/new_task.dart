@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:uptodo/providers/task_provider.dart';
 
 import '../models/task.dart';
 import '../services/database.dart';
@@ -44,7 +46,7 @@ class _NewTaskState extends State<NewTask> {
   final DatabaseService database = DatabaseService();
 
   Future<void> addTask(String title, String dueDate) async {
-    database.insertTask(Task(title: title, dueDate: dueDate, isDone: false));
+    Provider.of<TaskProvider>(context, listen: false).addTask(Task(title: title, dueDate: dueDate, isDone: false));
   }
 
   @override
@@ -53,15 +55,18 @@ class _NewTaskState extends State<NewTask> {
       appBar: AppBar(
         title: const Text("New task"),
         actions: [
-          IconButton(
-              onPressed: () => {
-                    if (controller.text != "")
-                      {
-                        addTask(controller.text, selectedDate.toString())
-                            .then((r) => Navigator.pop(context))
-                      }
-                  },
-              icon: const Icon(Icons.check))
+          ChangeNotifierProvider(
+            create: (context) => TaskProvider(),
+            child: IconButton(
+                onPressed: () => {
+                      if (controller.text != "")
+                        {
+                          addTask(controller.text, selectedDate.toString())
+                              .then((r) => Navigator.pop(context))
+                        }
+                    },
+                icon: const Icon(Icons.check)),
+          )
         ],
       ),
       body: Padding(
