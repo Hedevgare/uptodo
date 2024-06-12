@@ -38,7 +38,7 @@ class _TaskItemListState extends State<TaskItemList> {
       padding: const EdgeInsets.all(5.0),
       child: Container(
         decoration: BoxDecoration(
-            color: task.isDone ? Colors.lightGreen[200] : Colors.white,
+            color: task.isDone ? Colors.limeAccent[700] : Colors.white,
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(
