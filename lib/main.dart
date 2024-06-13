@@ -17,10 +17,26 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Uptodo',
         theme: ThemeData(
-          colorScheme: const ColorScheme.light(primary: Colors.blue),
+          brightness: Brightness.dark,
+          primaryColor: Colors.yellowAccent[700],
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+              brightness: Brightness.dark,
+              primary: Colors.yellowAccent[700],
+              secondary: const Color.fromRGBO(45, 45, 45, 1)),
+          textTheme: const TextTheme(
+            bodySmall: TextStyle(color: Colors.white),
+            bodyMedium: TextStyle(color: Colors.white),
+            bodyLarge: TextStyle(color: Colors.white),
+          ),
+          scaffoldBackgroundColor: const Color.fromRGBO(10, 10, 10, 1),
+          appBarTheme: const AppBarTheme(
+              backgroundColor: Color.fromRGBO(10, 10, 10, 1),
+              foregroundColor: Colors.white),
+          // colorScheme: ColorScheme.fromSeed(seedColor: Colors.red, brightness: Brightness.dark),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white, foregroundColor: Colors.black)),
+                  backgroundColor: Colors.yellow,
+                  foregroundColor: Colors.black)),
           useMaterial3: true,
         ),
         home: const MyHomePage(title: 'Uptodo'),

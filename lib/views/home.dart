@@ -32,15 +32,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: <Widget>[
           IconButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("TODO: App settings")));
-                Provider.of<TaskProvider>(context, listen: false)
-                    .purgeAllData();
+                // Provider.of<TaskProvider>(context, listen: false).purgeAllData();
               },
               icon: const Icon(Icons.settings))
         ],
@@ -88,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.black,
         onPressed: () async {
           await Navigator.push(context,

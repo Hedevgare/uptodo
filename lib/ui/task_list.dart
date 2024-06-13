@@ -27,7 +27,7 @@ class TaskList extends StatelessWidget {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('Nothing to do!'));
+                    return Center(child: Text('Nothing ${isDone ? 'done' : 'to do'}!'));
                   } else {
                     List<Task> t = snapshot.data ?? [];
                     return ListView.builder(

@@ -35,7 +35,14 @@ class _NewTaskState extends State<NewTask> {
         context: context,
         initialDate: selectedDate ?? DateTime.now(),
         firstDate: DateTime(DateTime.now().year),
-        lastDate: DateTime(2101));
+        lastDate: DateTime(2101),
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+              data: ThemeData.dark().copyWith(
+                  colorScheme:
+                      ColorScheme.dark(primary: Colors.yellowAccent[700]!)),
+              child: child!);
+        });
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -46,7 +53,8 @@ class _NewTaskState extends State<NewTask> {
   final DatabaseService database = DatabaseService();
 
   Future<void> addTask(String title, String dueDate) async {
-    Provider.of<TaskProvider>(context, listen: false).addTask(Task(title: title, dueDate: dueDate, isDone: false));
+    Provider.of<TaskProvider>(context, listen: false)
+        .addTask(Task(title: title, dueDate: dueDate, isDone: false));
   }
 
   @override
@@ -84,6 +92,7 @@ class _NewTaskState extends State<NewTask> {
                   hintStyle: TextStyle(color: Colors.grey),
                   alignLabelWithHint: true,
                   labelText: "Task description",
+                  labelStyle: TextStyle(color: Colors.grey),
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none),
               onTapOutside: (e) => FocusScope.of(context).unfocus(),
