@@ -15,6 +15,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late TextEditingController controller;
+  bool showSearch = false;
 
   @override
   void initState() {
@@ -28,12 +29,22 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+  void toggleSearch() {
+    setState(() {
+      showSearch = !showSearch;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        // title: Text(widget.title),
         actions: <Widget>[
+          IconButton(
+            onPressed: toggleSearch,
+              icon: const Icon(Icons.search),
+          ),
           IconButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -44,18 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
+            showSearch ? TextField(
               controller: controller,
               decoration: const InputDecoration(
                   hintText: "Search tasks",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(50.0)))),
               onTapOutside: (e) => FocusScope.of(context).unfocus(),
-            ),
+            ) : const SizedBox.shrink(),
             const SizedBox(
               height: 20,
             ),

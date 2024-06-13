@@ -39,7 +39,7 @@ class _TaskItemListState extends State<TaskItemList> {
       child: Container(
         decoration: BoxDecoration(
             color: task.isDone ? const Color.fromRGBO(30, 30, 30, 1) : Theme.of(context).colorScheme.secondary,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(25),
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -70,6 +70,17 @@ class _TaskItemListState extends State<TaskItemList> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 ListTile(
+                                  leading: const Icon(Icons.check, color: Colors.white),
+                                  title: Text(
+                                      'Mark as ${task.isDone ? "not done" : "done"}', style: const TextStyle(color: Colors.white),),
+                                  onTap: () {
+                                    task.isDone != task.isDone;
+                                    updateTask(task);
+                                    widget.onUpdate();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
                                   leading: const Icon(Icons.delete,
                                       color: Colors.red),
                                   title: const Text(
@@ -81,17 +92,6 @@ class _TaskItemListState extends State<TaskItemList> {
                                     Navigator.pop(context);
                                   },
                                 ),
-                                ListTile(
-                                  leading: const Icon(Icons.check, color: Colors.white),
-                                  title: Text(
-                                      'Mark as ${task.isDone ? "not done" : "done"}', style: const TextStyle(color: Colors.white),),
-                                  onTap: () {
-                                    task.isDone != task.isDone;
-                                    updateTask(task);
-                                    widget.onUpdate();
-                                    Navigator.pop(context);
-                                  },
-                                )
                               ],
                             ),
                           );
