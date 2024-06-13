@@ -6,7 +6,9 @@ import 'package:uptodo/ui/task_item_list.dart';
 import '../models/task.dart';
 
 class TaskList extends StatelessWidget {
-  const TaskList({super.key});
+  final bool isDone;
+
+  const TaskList({super.key, required this.isDone});
 
   Task toggleTask(Task task) {
     task.isDone = !task.isDone;
@@ -18,7 +20,7 @@ class TaskList extends StatelessWidget {
     return Consumer<TaskProvider>(
       builder: (context, taskProvider, child) {
           return FutureBuilder<List<Task>>(
-                future: taskProvider.getTasks(),
+                future: taskProvider.getTasks(isDone),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -29,6 +31,7 @@ class TaskList extends StatelessWidget {
                   } else {
                     List<Task> t = snapshot.data ?? [];
                     return ListView.builder(
+                        shrinkWrap: true,
                         itemCount: t.length,
                         itemBuilder: (context, int index) {
                           return TaskItemList(

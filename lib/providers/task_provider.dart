@@ -3,14 +3,12 @@ import 'package:uptodo/services/database.dart';
 import '../models/task.dart';
 
 class TaskProvider extends ChangeNotifier {
-  DatabaseService database = DatabaseService();
+  final DatabaseService database = DatabaseService();
 
-  TaskProvider() {
-    getTasks();
-  }
+  TaskProvider();
 
-  Future<List<Task>> getTasks() async {
-    return await database.allTasks();
+  Future<List<Task>> getTasks(bool isDone) async {
+    return await database.allTasks(isDone);
   }
 
   Future<void> addTask(task) async {
@@ -28,6 +26,7 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Development purposes
   Future<void> purgeAllData() async {
     await database.deleteAllTasks();
     notifyListeners();

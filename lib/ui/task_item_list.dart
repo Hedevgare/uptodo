@@ -38,7 +38,7 @@ class _TaskItemListState extends State<TaskItemList> {
       padding: const EdgeInsets.all(5.0),
       child: Container(
         decoration: BoxDecoration(
-            color: task.isDone ? Colors.limeAccent[700] : Colors.white,
+            color: task.isDone ? Colors.grey[300] : Colors.white,
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(
@@ -55,7 +55,7 @@ class _TaskItemListState extends State<TaskItemList> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                    Text(task.title, style: const TextStyle(fontSize: 16)),
+                    Text(task.title, style: TextStyle(fontSize: 16, color: task.isDone ? Colors.grey[700] : Colors.black),),
                     Text(
                       task.dueDate == 'null'
                           ? ''
@@ -102,7 +102,7 @@ class _TaskItemListState extends State<TaskItemList> {
                           );
                         },
                       ),
-                  icon: const Icon(Icons.more_horiz)),
+                  icon: Icon(Icons.more_horiz, color: task.isDone ? Colors.grey[700] : Colors.black,)),
             ],
           ),
         ),

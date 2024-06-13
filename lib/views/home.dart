@@ -1,11 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uptodo/models/task.dart';
 import 'package:uptodo/providers/task_provider.dart';
-import 'package:uptodo/services/database.dart';
-import 'package:uptodo/ui/task_item_list.dart';
 import 'package:uptodo/ui/task_list.dart';
 import 'package:uptodo/views/new_task.dart';
 
@@ -19,48 +14,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final DatabaseService database = DatabaseService();
-
-  Future<List<Task>> getTasks() async {
-    var tasks = await database.allTasks();
-    return tasks;
-  }
-
-  late Future<List<Task>> tasks;
+  late TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
-    tasks = getTasks();
+    controller = TextEditingController();
   }
 
-  void updateTask(Task task) async {
-    task.isDone = !task.isDone;
-    await database.updateTask(task).then((r) => {
-          setState(() {
-            tasks = getTasks();
-          })
-        });
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
-
-  void deleteTask(int id) {
-    database.deleteTask(id).then((r) => {
-          setState(() {
-            tasks = getTasks();
-          })
-        });
-  }
-
-  // Development purposes
-  void purgeDatabase() {
-    database.deleteAllTasks().then((r) => {
-          setState(() {
-            tasks = getTasks();
-          })
-        });
-  }
-
-  // End
 
   @override
   Widget build(BuildContext context) {
@@ -73,43 +39,64 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("TODO: App settings")));
-                Provider.of<TaskProvider>(context, listen: false).purgeAllData();
+                Provider.of<TaskProvider>(context, listen: false)
+                    .purgeAllData();
               },
               icon: const Icon(Icons.settings))
         ],
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(20.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // const TextField(
-            //   decoration: InputDecoration(hintText: "Search tasks"),
-            // ),
-            Text(
-              "My Tasks",
-              style: TextStyle(fontSize: 30),
+            TextField(
+              controller: controller,
+              decoration: const InputDecoration(
+                  hintText: "Search tasks",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50.0)))),
+              onTapOutside: (e) => FocusScope.of(context).unfocus(),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Expanded(
-              child: TaskList(),
+            const Text(
+              "Tasks",
+              style: TextStyle(fontSize: 20),
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            const TaskList(
+              isDone: false,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              "Completed",
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const TaskList(
+              isDone: true,
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         onPressed: () async {
-          await Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const NewTask()));
+          await Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const NewTask()));
         },
         tooltip: 'New task',
         child: const Icon(Icons.add),
       ),
     );
   }
-
-  // Future<void> navigateToNewTask(BuildContext context) async {
-  //   await
-  // }
 }

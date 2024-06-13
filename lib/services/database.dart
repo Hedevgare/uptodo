@@ -52,9 +52,9 @@ class DatabaseService {
     await db.update('tasks', task.toMap(), where: 'id = ?', whereArgs: [task.id]);
 }
 
-  Future<List<Task>> allTasks() async {
+  Future<List<Task>> allTasks(bool isDone) async {
     final db = await database;
-    final List<Map<String, Object?>> tasksMap = await db.query('tasks', orderBy: 'is_done ASC');
+    final List<Map<String, Object?>> tasksMap = await db.query('tasks', where: 'is_done = ?', whereArgs: [isDone ? 1 : 0], orderBy: 'due_date ASC');
     return tasksMap.map((map) => Task.fromMap(map)).toList();
   }
 

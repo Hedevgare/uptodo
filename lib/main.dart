@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           colorScheme: const ColorScheme.light(primary: Colors.blue),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, foregroundColor: Colors.white)),
+                  backgroundColor: Colors.white, foregroundColor: Colors.black)),
           useMaterial3: true,
         ),
         home: const MyHomePage(title: 'Uptodo'),
