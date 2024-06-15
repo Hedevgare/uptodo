@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         // title: Text(widget.title),
+        scrolledUnderElevation: 0.0,
         actions: <Widget>[
           IconButton(
             onPressed: toggleSearch,
@@ -59,14 +60,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            showSearch ? TextField(
-              controller: controller,
-              decoration: const InputDecoration(
-                  hintText: "Search tasks",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)))),
-              onTapOutside: (e) => FocusScope.of(context).unfocus(),
-            ) : const SizedBox.shrink(),
+            AnimatedSwitcher(duration: const Duration(milliseconds: 150),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return SlideTransition(position: Tween<Offset>(
+                begin: const Offset(0, -1),
+                end: const Offset(0, 0)
+              ).animate(animation),
+              child: child);
+            }, child: showSearch ? TextField(
+                controller: controller,
+                decoration: const InputDecoration(
+                    hintText: "Search tasks",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50.0)))),
+                onTapOutside: (e) => FocusScope.of(context).unfocus(),
+              ) : const SizedBox.shrink(),),
             const SizedBox(
               height: 20,
             ),
