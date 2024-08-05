@@ -7,8 +7,8 @@ class TaskProvider extends ChangeNotifier {
 
   TaskProvider();
 
-  Future<List<Task>> getTasks(bool isDone) async {
-    return await database.allTasks(isDone);
+  Future<List<Task>> getTasks(bool isDone, bool justToday) async {
+    return await database.allTasks(isDone, justToday);
   }
 
   Future<void> addTask(task) async {

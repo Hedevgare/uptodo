@@ -25,7 +25,7 @@ class DatabaseService {
 
   initDatabase() async {
     final path = join(await getDatabasesPath(), 'uptodo.db');
-    const int currentVersion = 2;
+    const int currentVersion = 3;
 
     return openDatabase(path, version: currentVersion, onCreate: (db, version) async {
       var batch = db.batch();
@@ -36,6 +36,9 @@ class DatabaseService {
       switch(oldVersion) {
         case 1:
           MigrationsService.migrationV2(batch);
+          break;
+        case 2:
+          MigrationsService.migrationV3(batch);
           break;
       }
       await batch.commit();
@@ -52,9 +55,10 @@ class DatabaseService {
     await db.update('tasks', task.toMap(), where: 'id = ?', whereArgs: [task.id]);
 }
 
-  Future<List<Task>> allTasks(bool isDone) async {
+  Future<List<Task>> allTasks(bool isDone, bool justToday) async {
+    String beginOfDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toString();
     final db = await database;
-    final List<Map<String, Object?>> tasksMap = await db.query('tasks', where: 'is_done = ?', whereArgs: [isDone ? 1 : 0], orderBy: 'due_date ASC');
+    final List<Map<String, Object?>> tasksMap = await db.query('tasks', where: 'is_done = ? AND done_date > ?', whereArgs: [isDone ? 1 : 0, beginOfDay], orderBy: 'due_date ASC');
     return tasksMap.map((map) => Task.fromMap(map)).toList();
   }
 

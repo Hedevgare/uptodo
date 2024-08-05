@@ -20,7 +20,7 @@ class TaskList extends StatelessWidget {
     return Consumer<TaskProvider>(
       builder: (context, taskProvider, child) {
           return FutureBuilder<List<Task>>(
-                future: taskProvider.getTasks(isDone),
+                future: taskProvider.getTasks(isDone, isDone ? true : false),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());

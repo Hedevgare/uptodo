@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 20,
             ),
             const Text(
-              "Completed",
+              "Completed Today",
               style: TextStyle(fontSize: 20),
             ),
             const SizedBox(
