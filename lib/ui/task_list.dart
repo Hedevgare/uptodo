@@ -10,11 +10,6 @@ class TaskList extends StatelessWidget {
 
   const TaskList({super.key, required this.isDone});
 
-  Task toggleTask(Task task) {
-    task.isDone = !task.isDone;
-    return task;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<TaskProvider>(
@@ -37,7 +32,7 @@ class TaskList extends StatelessWidget {
                           return TaskItemList(
                               task: t[index],
                               onDelete: () => taskProvider.deleteTask(t[index].id!),
-                              onUpdate: () => taskProvider.updateTask(toggleTask(t[index])));
+                              onUpdate: () => taskProvider.updateTask(t[index]));
                         });
                   }
                 },

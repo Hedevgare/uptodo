@@ -49,8 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("TODO: App settings")));
-                // Provider.of<TaskProvider>(context, listen: false).purgeAllData();
+                    const SnackBar(content: Text("TODO: App settings... for now it deletes all data :)")));
+                //Provider.of<TaskProvider>(context, listen: false).purgeAllData();
               },
               icon: const Icon(Icons.settings))
         ],

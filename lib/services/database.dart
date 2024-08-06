@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -56,9 +55,11 @@ class DatabaseService {
 }
 
   Future<List<Task>> allTasks(bool isDone, bool justToday) async {
-    String beginOfDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toString();
+    String beginOfDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toString().split(" ")[0];
     final db = await database;
-    final List<Map<String, Object?>> tasksMap = await db.query('tasks', where: 'is_done = ? AND done_date > ?', whereArgs: [isDone ? 1 : 0, beginOfDay], orderBy: 'due_date ASC');
+    String whereClause = justToday ? 'is_done = ? AND done_date = ?' : 'is_done = ?';
+    List<Object> whereArgs = justToday ? [isDone ? 1 : 0, beginOfDay] : [isDone ? 1 : 0];
+    final List<Map<String, Object?>> tasksMap = await db.query('tasks', where: whereClause, whereArgs: whereArgs, orderBy: 'due_date ASC');
     return tasksMap.map((map) => Task.fromMap(map)).toList();
   }
 

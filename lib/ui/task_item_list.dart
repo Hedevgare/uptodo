@@ -74,7 +74,7 @@ class _TaskItemListState extends State<TaskItemList> {
                                   title: Text(
                                       'Mark as ${task.isDone ? "not done" : "done"}', style: const TextStyle(color: Colors.white),),
                                   onTap: () {
-                                    task.isDone != task.isDone;
+                                    task.isDone = !task.isDone;
                                     task.doneDate = task.isDone ? DateTime.now().toString() : 'null';
                                     updateTask(task);
                                     widget.onUpdate();
