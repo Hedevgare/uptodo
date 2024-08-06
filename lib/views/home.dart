@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:uptodo/providers/task_provider.dart';
 import 'package:uptodo/ui/task_list.dart';
 import 'package:uptodo/views/new_task.dart';
 
