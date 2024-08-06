@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:uptodo/ui/navbar.dart';
 import 'package:uptodo/ui/task_list.dart';
-import 'package:uptodo/views/new_task.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class ArchivePage extends StatefulWidget {
+  const ArchivePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ArchivePage> createState() => _ArchivePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ArchivePageState extends State<ArchivePage> {
   late TextEditingController controller;
   bool showSearch = false;
 
@@ -43,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           IconButton(
             onPressed: toggleSearch,
-              icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search),
           ),
           IconButton(
               onPressed: () {
@@ -58,15 +54,15 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             AnimatedSwitcher(duration: const Duration(milliseconds: 150),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return SlideTransition(position: Tween<Offset>(
-                begin: const Offset(0, -1),
-                end: const Offset(0, 0)
-              ).animate(animation),
-              child: child);
-            }, child: showSearch ? TextField(
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return SlideTransition(position: Tween<Offset>(
+                    begin: const Offset(0, -1),
+                    end: const Offset(0, 0)
+                ).animate(animation),
+                    child: child);
+              }, child: showSearch ? TextField(
                 controller: controller,
                 decoration: const InputDecoration(
                     hintText: "Search tasks",
@@ -75,46 +71,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTapOutside: (e) => FocusScope.of(context).unfocus(),
               ) : const SizedBox.shrink(),),
             const SizedBox(
-              height: 20,
+              height: 20.0,
             ),
             const Text(
-              "Tasks",
-              style: TextStyle(fontSize: 20),
+              'Archive',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
-              height: 20,
+              height: 20.0,
             ),
-            const TaskList(
-              isDone: false,
-              justToday: false,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              "Completed Today",
-              style: TextStyle(fontSize: 20),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const TaskList(
-              isDone: true,
-              justToday: true,
-            ),
+            const TaskList(isDone: true, justToday: false)
+            // TaskList(isDone: true),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Theme.of(context).primaryColor,
-      //   foregroundColor: Colors.black,
-      //   onPressed: () async {
-      //     await Navigator.push(context,
-      //         MaterialPageRoute(builder: (context) => const NewTask()));
-      //   },
-      //   tooltip: 'New task',
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }

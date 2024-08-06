@@ -7,15 +7,16 @@ import '../models/task.dart';
 
 class TaskList extends StatelessWidget {
   final bool isDone;
+  final bool justToday;
 
-  const TaskList({super.key, required this.isDone});
+  const TaskList({super.key, required this.isDone, required this.justToday});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<TaskProvider>(
       builder: (context, taskProvider, child) {
           return FutureBuilder<List<Task>>(
-                future: taskProvider.getTasks(isDone, isDone ? true : false),
+                future: taskProvider.getTasks(isDone, justToday),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());

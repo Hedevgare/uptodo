@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uptodo/ui/navbar.dart';
 import 'package:uptodo/providers/task_provider.dart';
 import 'package:uptodo/views/home.dart';
 
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
                   foregroundColor: Colors.black)),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Uptodo'),
+        // home: const MyHomePage(title: 'Uptodo'),
+        home: const Navbar(),
       ),
     );
   }
