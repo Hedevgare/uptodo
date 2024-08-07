@@ -17,7 +17,6 @@ class TaskProvider extends ChangeNotifier {
   }
 
   Future<void> updateTask(Task task) async {
-    task.doneDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 1).toString();
     await database.updateTask(task);
     notifyListeners();
   }
