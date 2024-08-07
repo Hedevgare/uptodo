@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:uptodo/views/archive.dart';
+import 'package:uptodo/views/calendar.dart';
 import 'package:uptodo/views/home.dart';
 import 'package:uptodo/views/new_task.dart';
+import 'package:uptodo/views/timer.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -12,11 +14,18 @@ class Navbar extends StatefulWidget {
 
 class _NavbarState extends State<Navbar> {
   final PageController _pageController = PageController();
+  int _selectedIndex = 0;
 
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  void changePage(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   void toggleSearch() {}
@@ -34,8 +43,9 @@ class _NavbarState extends State<Navbar> {
           ),
           IconButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("TODO: App settings... for now it deletes all data :)")));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text(
+                        "TODO: App settings... for now it deletes all data :)")));
                 //Provider.of<TaskProvider>(context, listen: false).purgeAllData();
               },
               icon: const Icon(Icons.settings))
@@ -63,27 +73,81 @@ class _NavbarState extends State<Navbar> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.home,
-                color: Colors.black,
+            Container(
+              decoration: BoxDecoration(
+                  color: _selectedIndex == 0
+                      ? Theme.of(context).appBarTheme.backgroundColor
+                      : Colors.yellowAccent[700],
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0))
               ),
-              onPressed: () {
-                _pageController.jumpToPage(0);
-              },
+              child: IconButton(
+                icon: Icon(Icons.done_all, color: _selectedIndex == 0 ? Colors.white : Colors.black),
+                onPressed: () {
+                  changePage(0);
+                  _pageController.jumpToPage(0);
+                },
+              ),
             ),
-            IconButton(
-              icon: const Icon(Icons.done_all, color: Colors.black),
-              onPressed: () {
-                _pageController.jumpToPage(1);
-              },
+            Container(
+              decoration: BoxDecoration(
+                  color: _selectedIndex == 1
+                      ? Theme.of(context).appBarTheme.backgroundColor
+                      : Colors.yellowAccent[700],
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0))
+              ),
+              child: IconButton(
+                icon: Icon(Icons.calendar_month_outlined, color: _selectedIndex == 1 ? Colors.white : Colors.black),
+                onPressed: () {
+                  changePage(1);
+                  _pageController.jumpToPage(1);
+                },
+              ),
+            ),
+            const SizedBox(
+              width: 50,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: _selectedIndex == 2
+                      ? Theme.of(context).appBarTheme.backgroundColor
+                      : Colors.yellowAccent[700],
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0))
+              ),
+              child: IconButton(
+                icon: Icon(Icons.archive_outlined, color: _selectedIndex == 2 ? Colors.white : Colors.black),
+                onPressed: () {
+                  changePage(2);
+                  _pageController.jumpToPage(2);
+                },
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: _selectedIndex == 3
+                      ? Theme.of(context).appBarTheme.backgroundColor
+                      : Colors.yellowAccent[700],
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0))
+              ),
+              child: IconButton(
+                icon: Icon(Icons.timer_outlined, color: _selectedIndex == 3 ? Colors.white : Colors.black),
+                onPressed: () {
+                  changePage(3);
+                  _pageController.jumpToPage(3);
+                },
+              ),
             ),
           ],
         ),
       ),
       body: PageView(
+        onPageChanged: changePage,
         controller: _pageController,
-        children: const <Widget>[MyHomePage(title: 'Uptodo'), ArchivePage()],
+        children: const <Widget>[
+          MyHomePage(title: 'Uptodo'),
+          CalendarPage(),
+          ArchivePage(),
+          TimerPage()
+        ],
       ),
     );
   }
