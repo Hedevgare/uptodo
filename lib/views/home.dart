@@ -28,32 +28,15 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  void toggleSearch() {
-    setState(() {
-      showSearch = !showSearch;
-    });
-  }
+  // void toggleSearch() {
+  //   setState(() {
+  //     showSearch = !showSearch;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text(widget.title),
-        scrolledUnderElevation: 0.0,
-        actions: <Widget>[
-          IconButton(
-            onPressed: toggleSearch,
-              icon: const Icon(Icons.search),
-          ),
-          IconButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("TODO: App settings... for now it deletes all data :)")));
-                //Provider.of<TaskProvider>(context, listen: false).purgeAllData();
-              },
-              icon: const Icon(Icons.settings))
-        ],
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
         child: Column(

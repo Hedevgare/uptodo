@@ -19,9 +19,28 @@ class _NavbarState extends State<Navbar> {
     super.dispose();
   }
 
+  void toggleSearch() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        // title: Text(widget.title),
+        scrolledUnderElevation: 0.0,
+        actions: <Widget>[
+          IconButton(
+            onPressed: toggleSearch,
+            icon: const Icon(Icons.search),
+          ),
+          IconButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("TODO: App settings... for now it deletes all data :)")));
+                //Provider.of<TaskProvider>(context, listen: false).purgeAllData();
+              },
+              icon: const Icon(Icons.settings))
+        ],
+      ),
       extendBody: true,
       floatingActionButton: FloatingActionButton(
         shape: const RoundedRectangleBorder(
