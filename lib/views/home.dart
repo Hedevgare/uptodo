@@ -61,8 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 20,
             ),
             const Text(
-              "Tasks",
-              style: TextStyle(fontSize: 20),
+              'Tasks',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 20,
@@ -75,8 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 20,
             ),
             const Text(
-              "Completed Today",
-              style: TextStyle(fontSize: 20),
+              'Completed Today',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 20,
