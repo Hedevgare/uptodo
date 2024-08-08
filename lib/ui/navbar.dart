@@ -61,10 +61,11 @@ class _NavbarState extends State<Navbar> {
           await Navigator.push(context,
               MaterialPageRoute(builder: (context) => const NewTask()));
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, size: 30),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         height: 60,
         color: Colors.yellowAccent[700],
         shape: const CircularNotchedRectangle(),
@@ -73,30 +74,38 @@ class _NavbarState extends State<Navbar> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Container(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOut,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
                   color: _selectedIndex == 0
                       ? Theme.of(context).appBarTheme.backgroundColor
                       : Colors.yellowAccent[700],
-                  borderRadius: const BorderRadius.all(Radius.circular(50.0))
-              ),
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0))),
               child: IconButton(
-                icon: Icon(Icons.done_all, color: _selectedIndex == 0 ? Colors.white : Colors.black),
+                icon: Icon(Icons.done_all,
+                    size: 30,
+                    color: _selectedIndex == 0 ? Colors.white : Colors.black),
                 onPressed: () {
                   changePage(0);
                   _pageController.jumpToPage(0);
                 },
               ),
             ),
-            Container(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOut,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
                   color: _selectedIndex == 1
                       ? Theme.of(context).appBarTheme.backgroundColor
                       : Colors.yellowAccent[700],
-                  borderRadius: const BorderRadius.all(Radius.circular(50.0))
-              ),
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0))),
               child: IconButton(
-                icon: Icon(Icons.calendar_month_outlined, color: _selectedIndex == 1 ? Colors.white : Colors.black),
+                icon: Icon(Icons.calendar_month_outlined,
+                    size: 30,
+                    color: _selectedIndex == 1 ? Colors.white : Colors.black),
                 onPressed: () {
                   changePage(1);
                   _pageController.jumpToPage(1);
@@ -106,30 +115,38 @@ class _NavbarState extends State<Navbar> {
             const SizedBox(
               width: 50,
             ),
-            Container(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOut,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
                   color: _selectedIndex == 2
                       ? Theme.of(context).appBarTheme.backgroundColor
                       : Colors.yellowAccent[700],
-                  borderRadius: const BorderRadius.all(Radius.circular(50.0))
-              ),
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0))),
               child: IconButton(
-                icon: Icon(Icons.archive_outlined, color: _selectedIndex == 2 ? Colors.white : Colors.black),
+                icon: Icon(Icons.archive_outlined,
+                    size: 30,
+                    color: _selectedIndex == 2 ? Colors.white : Colors.black),
                 onPressed: () {
                   changePage(2);
                   _pageController.jumpToPage(2);
                 },
               ),
             ),
-            Container(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOut,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
                   color: _selectedIndex == 3
                       ? Theme.of(context).appBarTheme.backgroundColor
                       : Colors.yellowAccent[700],
-                  borderRadius: const BorderRadius.all(Radius.circular(50.0))
-              ),
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0))),
               child: IconButton(
-                icon: Icon(Icons.timer_outlined, color: _selectedIndex == 3 ? Colors.white : Colors.black),
+                icon: Icon(Icons.timer_outlined,
+                    size: 30,
+                    color: _selectedIndex == 3 ? Colors.white : Colors.black),
                 onPressed: () {
                   changePage(3);
                   _pageController.jumpToPage(3);
