@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:uptodo/ui/navbar.dart';
+// import 'package:uptodo/ui/navbar.dart';
 import 'package:uptodo/ui/task_list.dart';
-import 'package:uptodo/views/new_task.dart';
+// import 'package:uptodo/views/new_task.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

@@ -39,7 +39,7 @@ class _TaskItemListState extends State<TaskItemList> {
       child: Container(
         decoration: BoxDecoration(
             color: task.isDone ? const Color.fromRGBO(30, 30, 30, 1) : Theme.of(context).colorScheme.secondary,
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),

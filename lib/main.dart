@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uptodo/ui/navbar.dart';
 import 'package:uptodo/providers/task_provider.dart';
-import 'package:uptodo/views/home.dart';
+// import 'package:uptodo/views/home.dart';
 
 void main() {
   runApp(const MyApp());
