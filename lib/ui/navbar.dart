@@ -93,6 +93,28 @@ class _NavbarState extends State<Navbar> {
                 },
               ),
             ),
+            // AnimatedContainer(
+            //   duration: const Duration(milliseconds: 400),
+            //   curve: Curves.easeInOut,
+            //   padding: const EdgeInsets.symmetric(horizontal: 8),
+            //   decoration: BoxDecoration(
+            //       color: _selectedIndex == 1
+            //           ? Theme.of(context).appBarTheme.backgroundColor
+            //           : Colors.yellowAccent[700],
+            //       borderRadius: const BorderRadius.all(Radius.circular(50.0))),
+            //   child: IconButton(
+            //     icon: Icon(Icons.calendar_month_outlined,
+            //         size: 30,
+            //         color: _selectedIndex == 1 ? Colors.white : Colors.black),
+            //     onPressed: () {
+            //       changePage(1);
+            //       _pageController.jumpToPage(1);
+            //     },
+            //   ),
+            // ),
+            const SizedBox(
+              width: 50,
+            ),
             AnimatedContainer(
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOut,
@@ -103,56 +125,34 @@ class _NavbarState extends State<Navbar> {
                       : Colors.yellowAccent[700],
                   borderRadius: const BorderRadius.all(Radius.circular(50.0))),
               child: IconButton(
-                icon: Icon(Icons.calendar_month_outlined,
+                icon: Icon(Icons.archive_outlined,
                     size: 30,
                     color: _selectedIndex == 1 ? Colors.white : Colors.black),
                 onPressed: () {
-                  changePage(1);
+                  changePage(2);
                   _pageController.jumpToPage(1);
                 },
               ),
             ),
-            const SizedBox(
-              width: 50,
-            ),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.easeInOut,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(
-                  color: _selectedIndex == 2
-                      ? Theme.of(context).appBarTheme.backgroundColor
-                      : Colors.yellowAccent[700],
-                  borderRadius: const BorderRadius.all(Radius.circular(50.0))),
-              child: IconButton(
-                icon: Icon(Icons.archive_outlined,
-                    size: 30,
-                    color: _selectedIndex == 2 ? Colors.white : Colors.black),
-                onPressed: () {
-                  changePage(2);
-                  _pageController.jumpToPage(2);
-                },
-              ),
-            ),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.easeInOut,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(
-                  color: _selectedIndex == 3
-                      ? Theme.of(context).appBarTheme.backgroundColor
-                      : Colors.yellowAccent[700],
-                  borderRadius: const BorderRadius.all(Radius.circular(50.0))),
-              child: IconButton(
-                icon: Icon(Icons.timer_outlined,
-                    size: 30,
-                    color: _selectedIndex == 3 ? Colors.white : Colors.black),
-                onPressed: () {
-                  changePage(3);
-                  _pageController.jumpToPage(3);
-                },
-              ),
-            ),
+            // AnimatedContainer(
+            //   duration: const Duration(milliseconds: 400),
+            //   curve: Curves.easeInOut,
+            //   padding: const EdgeInsets.symmetric(horizontal: 8),
+            //   decoration: BoxDecoration(
+            //       color: _selectedIndex == 3
+            //           ? Theme.of(context).appBarTheme.backgroundColor
+            //           : Colors.yellowAccent[700],
+            //       borderRadius: const BorderRadius.all(Radius.circular(50.0))),
+            //   child: IconButton(
+            //     icon: Icon(Icons.timer_outlined,
+            //         size: 30,
+            //         color: _selectedIndex == 3 ? Colors.white : Colors.black),
+            //     onPressed: () {
+            //       changePage(3);
+            //       _pageController.jumpToPage(3);
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -161,9 +161,9 @@ class _NavbarState extends State<Navbar> {
         controller: _pageController,
         children: const <Widget>[
           MyHomePage(title: 'Uptodo'),
-          CalendarPage(),
+          // CalendarPage(),
           ArchivePage(),
-          TimerPage()
+          // TimerPage()
         ],
       ),
     );
