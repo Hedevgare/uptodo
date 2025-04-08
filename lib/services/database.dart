@@ -26,10 +26,13 @@ class DatabaseService {
     final path = join(await getDatabasesPath(), 'uptodo.db');
     const int currentVersion = 3;
 
-    return openDatabase(path, version: currentVersion, onCreate: (db, version) async {
-      var batch = db.batch();
-      MigrationsService.migrationV1(batch);
-      await batch.commit();
+    return openDatabase(path, version: currentVersion,
+      onCreate: (db, version) async {
+        var batch = db.batch();
+        MigrationsService.migrationV1(batch);
+        MigrationsService.migrationV2(batch);
+        MigrationsService.migrationV3(batch);
+        await batch.commit();
     }, onUpgrade: (db, oldVersion, newVersion) async {
       var batch = db.batch();
       switch(oldVersion) {
