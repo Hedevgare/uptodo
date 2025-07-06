@@ -11,34 +11,34 @@ pipeline {
     stages {
         stage("Install Dependencies") {
             steps {
-                bat """
+                bat '''
                 flutter pub get
-                """
+                '''
             }
         }
 
         stage("Clear Old Builds") {
             steps {
-                powershell """
+                powershell '''
                 Remove-Item -Path "build\\app\\outputs\\flutter-apk\\*" -Recurse -Force -ErrorAction SilentlyContinue
-                """
+                '''
             }
         }
 
         stage("Build") {
             steps {
-                bat """
+                bat '''
                 flutter build apk --release
-                """
+                '''
             }
         }
 
         stage("Rename APK") {
             steps {
-                powershell """
+                powershell '''
                 $version = ((Get-Content pubspec.yaml) -match '^version:')[0].Split(" ")[1].Trim()
                 Move-Item -Path "build\\app\\outputs\\flutter-apk\\app-release.apk" -Destination "build\\app\\outputs\\flutter-apk\\uptodo-$version.apk"
-                """
+                '''
             }
         }
 
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: env.SSH_CRED_ID, keyFileVariable: 'SSH_KEY')]) {
                     bat '''
-                    scp -i %SSH_KEY% -r build\\app\\outputs\\flutter-apk\\uptodo-* %REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH%
+                    scp -i %SSH_KEY% -r build\\app\\outputs\\flutter-apk\\uptodo-*.apk %REMOTE_USER%@%REMOTE_HOST%:%REMOTE_PATH%
                     '''
                 }
             }
